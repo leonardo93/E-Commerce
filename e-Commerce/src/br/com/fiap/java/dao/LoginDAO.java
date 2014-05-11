@@ -12,18 +12,18 @@ public class LoginDAO {
 
 	Connection conn = null;
 
-	public LoginDAO(){
+	public LoginDAO() {
 
-			try {
-				conn = ConnectionFactory.getConnection();
-			} catch (SQLException e) {
-			}
+		try {
+			conn = ConnectionFactory.getConnection();
+		} catch (SQLException e) {
+		}
 	}
-		
 
-	public boolean verificaLogin(String email, String pw){
+	public boolean verificaLogin(String email, String pw) {
 
-		String sql = "SELECT * FROM LOGIN WHERE EMAIL='" + email + "' AND PW='" + pw + "'";
+		String sql = "SELECT * FROM LOGIN WHERE EMAIL='" + email + "' AND PW='"
+				+ pw + "'";
 
 		try {
 
@@ -31,9 +31,8 @@ public class LoginDAO {
 
 			ResultSet rs = stmt.executeQuery();
 
-			if(rs.next())
+			if (rs.next())
 				return true;
-			
 
 		} catch (SQLException ex) {
 
@@ -42,36 +41,30 @@ public class LoginDAO {
 		return false;
 
 	}
-	public void createLogin(Contato c){
-		
+
+	public void createLogin(Contato c) {
+
 		String sql = "INSERT INTO ECOMMERCE.LOGIN(NAME,LAST_NAME,EMAIL,PW,COUNTRY,CITY) VALUES (?,?,?,?,?,?)";
-		
+
 		try {
-			
+
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			
+
 			stmt.setString(1, c.getName());
 			stmt.setString(2, c.getLastName());
 			stmt.setString(3, c.getEmail());
 			stmt.setString(4, c.getPassword());
 			stmt.setString(5, c.getCountry());
 			stmt.setString(6, c.getCity());
-			
-			stmt.executeUpdate();
-			
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				System.out.println("Erro:" + e.getMessage());
-			}
 
+			stmt.executeUpdate();
+
+		} catch (SQLException ex) {
 		}
-		
+
 	}
-	public boolean verificaRegistro(String email){
+
+	public boolean verificaRegistro(String email) {
 
 		String sql = "SELECT * FROM LOGIN WHERE EMAIL='" + email + "'";
 
@@ -81,23 +74,23 @@ public class LoginDAO {
 
 			ResultSet rs = stmt.executeQuery();
 
-			if(rs.next())
+			if (rs.next())
 				return true;
-
 
 		} catch (SQLException ex) {
 
-		} 
+		}
 
-			return false;
+		return false;
 
 	}
-	public Contato pegaLogin(String email){
+
+	public Contato pegaLogin(String email) {
 
 		String sql = "SELECT * FROM LOGIN WHERE EMAIL='" + email + "'";
 
 		Contato contato = new Contato();
-		
+
 		try {
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -105,8 +98,7 @@ public class LoginDAO {
 			ResultSet rs = stmt.executeQuery();
 
 			rs.next();
-			
-			
+
 			contato.setName(rs.getString("NAME"));
 			contato.setLastName(rs.getString("LAST_NAME"));
 			contato.setId(rs.getInt("ID"));
@@ -114,22 +106,23 @@ public class LoginDAO {
 			contato.setPassword(rs.getString("PW"));
 			contato.setCity(rs.getString("CITY"));
 			contato.setCountry(rs.getString("COUNTRY"));
-			
+
 			System.out.println(contato.getEmail());
-			
-			
 
 		} catch (SQLException ex) {
 
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-			}
-
 		}
-		
+
 		return contato;
 
+	}
+
+	public void fecharConexao() {
+
+		try {
+			conn.close();
+		} catch (SQLException ex) {
+
+		}
 	}
 }

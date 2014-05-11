@@ -30,7 +30,7 @@ public class RegistrationServlet extends HttpServlet {
 	}
 	
 	protected void requestHandler(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//response.setContentType("text/html");
+		response.setContentType("text/html");
 
 		String nome = request.getParameter("txtNome");
 		String sobrenome = request.getParameter("txtSobrenome");
@@ -78,6 +78,7 @@ public class RegistrationServlet extends HttpServlet {
 			contato.setCity(cidade);
 
 			login.createLogin(contato);
+			login.fecharConexao();
 
 
 		request.setAttribute("error", erro);
@@ -85,7 +86,6 @@ public class RegistrationServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher(pagina);
 		dispatcher.forward(request, response);
 
-		// <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 	}
 

@@ -42,18 +42,18 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		Contato contato = new Contato();
 
-			if (login.verificaLogin(email,pw)){
-				pagina = "home.jsp";
-				contato = login.pegaLogin(email);
-				session.setAttribute("cont", contato);
-				System.out.println(contato.getEmail());
-			}
-			else{
-				pagina = "error.jsp";
-				erro = "Email ou senha incorreta.";
-				request.setAttribute("error", erro);
-			}
-		
+		if (login.verificaLogin(email, pw)) {
+			pagina = "home.jsp";
+			contato = login.pegaLogin(email);
+			session.setAttribute("cont", contato);
+		} else {
+			pagina = "error.jsp";
+			erro = "Email ou senha incorreta.";
+			request.setAttribute("error", erro);
+		}
+
+		login.fecharConexao();
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher(pagina);
 		dispatcher.forward(request, response);
 	}
